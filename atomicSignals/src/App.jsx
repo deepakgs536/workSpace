@@ -1,7 +1,7 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box, FormControl, FormLabel, Input, Stack, ThemeProvider } from '@mui/material';
 import StyledButton from './components/buttons/styledButton';
-import LightTheme from './components/themes/lightTheme';
+import LightTheme from './themes/lightTheme';
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import StyledIconButton from './components/buttons/styledIconButton'
 import SignUpWithGoogle from './components/buttons/signUpWithGoogle'
@@ -16,6 +16,7 @@ import SetupGrading from './screens/signalsGrading/setupGrading';
 // import FeedbackType from './components/feedbackType';
 // import Temp from './components/temp'
 import { GlobalFunctionProvider } from './components/snackbar/snackbar';  // import the provider
+import Navbar from './components/navbar/navbar';
 function App() {
   return (
     <>
@@ -24,7 +25,7 @@ function App() {
       <GlobalFunctionProvider>
       <AppRouter/> 
       </GlobalFunctionProvider>
-
+      {/* <Navbar/> */}
       {/* <UserEntry/> */}
             
       {/* <UserEntry/>   */}

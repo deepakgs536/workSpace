@@ -70,10 +70,9 @@ function FollowSteps({ active = false }) {
             onClick={
                 active
                 ? () => {
-                    myFunction(true, 'hello');
                     setTimeout(() => {
                         navigate('/setupSignals');
-                    }, 2000); // 2000 milliseconds = 2 seconds
+                    }, 1000); // 2000 milliseconds = 2 seconds
                     }
                 : undefined
             }
