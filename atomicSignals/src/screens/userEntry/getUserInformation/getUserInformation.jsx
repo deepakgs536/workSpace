@@ -8,6 +8,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useTheme } from '@emotion/react';
 import TextFieldComponent from '../../../components/textField/textField';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalFunction } from '../../../components/snackbar/snackbar';
 
 function GetUserInformation() {
     const [selected, setSelected] = useState({
@@ -28,6 +29,7 @@ function GetUserInformation() {
     const options = ['CEO', 'Manager','Employee'];
     const theme = useTheme();
     const navigate = useNavigate();
+    const { myFunction } = useGlobalFunction();
     const handleFeedbackChange = (ariaLabel) => {
         setSelected(prevSelected => ({
             'reportingTo': { ...prevSelected.reportingTo, status: false },
@@ -166,7 +168,14 @@ function GetUserInformation() {
                     </Stack>
                 </Stack>
 
-                <StyledButton text='Lets dive in' onClick={() => navigate('/dashboard')}/>
+                <StyledButton text='Lets dive in' 
+                onClick={() => {
+                    myFunction(true, 'Kudos! You’re into building the right feedback culture');
+
+                    navigate('/steps');
+
+                  }}
+                />
             </Stack>
         </Box>
     );

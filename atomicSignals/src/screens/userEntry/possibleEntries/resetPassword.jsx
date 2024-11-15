@@ -27,10 +27,18 @@ function resetPassword({changeUserEntry}) {
     <TextFieldComponent
             type='password' label='Confirm new password' placeholder='Sam Parker'
     />
-    <StyledButton text='Reset Password' onClick = {() => myFunction(true,'hello')}/>
+    <StyledButton text='Reset Password' 
+      onClick={() => {
+      myFunction(true, 'Password Reseted Successfully');
+      setTimeout(() => {
+      changeUserEntry('signUp');
+      }, 1000);
+    }}
+    />
     
     </>
   )
 }
 
 export default resetPassword
+
