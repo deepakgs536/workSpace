@@ -7,6 +7,7 @@ import SetupGrading from '../signalsGrading/setupGrading';
 import MetricsImage from '../../assets/metrics.svg';  // Importing JSX components
 import PillarImage from '../../assets/pillar.svg';
 import TeamImage from '../../assets/team.svg';
+import NextIcon from '../../assets/nextIcon.jsx';
 
 function Steps() {
   const navigate = useNavigate();
@@ -136,7 +137,9 @@ function Steps() {
             buttonText={step.buttonText}
             active={stepsState[step.stepNum].active} // Pass active state as a prop
             completed={stepsState[step.stepNum].completed} // Pass completed state as a prop
+            completedMessage={step.completedMessage}
             onClick={step.onClick}
+            onClickSkip={() => markStepCompleted(step.stepNum)} // Wrap in a function to prevent immediate invocation
             image = {step.image}
           />
         ))}

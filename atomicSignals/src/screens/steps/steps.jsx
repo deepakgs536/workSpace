@@ -2,6 +2,12 @@ import { Stack, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import FollowSteps from './followSteps';
 import { useNavigate } from 'react-router-dom';
+import SetupSignals from '../signalsGrading/setupSignals';
+import SetupGrading from '../signalsGrading/setupGrading';
+import MetricsImage from '../../assets/metrics.svg';  // Importing JSX components
+import PillarImage from '../../assets/pillar.svg';
+import TeamImage from '../../assets/team.svg';
+import NextIcon from '../../assets/nextIcon.jsx';
 
 function Steps() {
     const navigate = useNavigate();
@@ -26,32 +32,43 @@ function Steps() {
 
     const steps = [
         {
-            stepNum: 1,
-            stepTitle: 'Setup Signals',
-            stepDescription: 'Signals are attributes against which you can give feedback to someone (Eg. Attitude, Efficiency...)',
-            buttonText: 'Add signals',
-            completedMessage : 'signals',
-            onClick: () => setActiveOverlay('SetupSignalsOverlay'),
+          stepNum: 1,
+          stepTitle: 'Setup Signals',
+          stepDescription:
+            'Signals are attributes against which you can give feedback to someone (Eg. Attitude, Efficiency...)',
+          buttonText: 'Add signals',
+          componentName: 'SetupSignalsOverlay',
+          completedMessage : 'signals',
+          image : MetricsImage ,
+          onClick: () => setActiveOverlay('SetupSignalsOverlay'),
         },
         {
-            stepNum: 2,
-            stepTitle: 'Setup Grading',
-            stepDescription: 'Grading is a framework which you can use while giving feedback (Eg. Inefficient, Neutral...)',
-            buttonText: 'Add grading',
-            completedMessage : 'grading',
-            onClick: () => setActiveOverlay('SetupGradingOverlay'),
+          stepNum: 2,
+          stepTitle: 'Setup Grading',
+          stepDescription:
+            'Grading is a framework which you can use while giving feedback (Eg. Inefficient, Neutral...)',
+          buttonText: 'Add grading',
+          componentName: 'SetupGradingOverlay',
+          completedMessage : 'grading',
+          image : PillarImage ,
+          onClick: () => setActiveOverlay('SetupGradingOverlay'),
         },
         {
-            stepNum: 3,
-            stepTitle: 'Import Team Members',
-            stepDescription: 'The power is with the people always, you can import and bring them here',
-            buttonText: 'Import team members',
-            completedMessage : 'your team',
-            onClick: () => {
-                markStepCompleted(3); // Mark step 3 as completed
-            },
+          stepNum: 3,
+          stepTitle: 'Import Team Members',
+          stepDescription: 'The power is with the people always, you can import and bring them here',
+          buttonText: 'Import team members',
+          componentName: 'ImportTeamOverlay',
+          completedMessage : 'your team',
+          image : TeamImage ,
+          onClick: () => {
+            markStepCompleted(3); // Mark step 3 as completed
+            setTimeout(() => {
+                navigate('/dashboard'); // Navigate to the dashboard after a delay
+            }, 1000); // Delay of 1 second (1000 milliseconds)
         },
-    ];
+        },
+      ];
 
     const markStepCompleted = (stepNum) => {
         setStepsState((prev) => {
@@ -114,21 +131,22 @@ function Steps() {
 
             {/* Steps Container */}
             <Stack direction="row" justifyContent="space-between" spacing={1}>
-                {steps.map((step) => (
-                    <FollowSteps
-                        key={step.stepNum}
-                        stepNum={step.stepNum}
-                        stepTitle={step.stepTitle}
-                        stepDescription={step.stepDescription}
-                        buttonText={step.buttonText}
-                        active={stepsState[step.stepNum]?.active} // Pass active state as a prop
-                        completed={stepsState[step.stepNum]?.completed} // Pass completed state as a prop
-                        onClick={step.onClick}
-                        completedMessage = {step.completedMessage}
-
-                    />
-                ))}
-            </Stack>
+        {steps.map((step) => (
+          <FollowSteps
+            key={step.stepNum}
+            stepNum={step.stepNum}
+            stepTitle={step.stepTitle}
+            stepDescription={step.stepDescription}
+            buttonText={step.buttonText}
+            active={stepsState[step.stepNum].active} // Pass active state as a prop
+            completed={stepsState[step.stepNum].completed} // Pass completed state as a prop
+            completedMessage={step.completedMessage}
+            onClick={step.onClick}
+            image = {step.image}
+            onClickSkip={() => markStepCompleted(step.stepNum)} // Wrap in a function to prevent immediate invocation
+          />
+        ))}
+      </Stack>
 
             {/* Render Overlay */}
             {overlay}

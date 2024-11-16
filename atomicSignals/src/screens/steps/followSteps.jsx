@@ -1,4 +1,4 @@
-import { alpha, Box, Stack, Typography } from '@mui/material';
+import { alpha, backdropClasses, Box, Stack, Typography } from '@mui/material';
 import React from 'react';
 import StyledButton from '../../components/buttons/styledButton';
 import { useTheme } from '@emotion/react';
@@ -6,7 +6,7 @@ import CompletedIcon from '../../assets/completedIcon';
 import CreateOutlinedIcon from '@mui/icons-material/CreateOutlined';
 import zIndex from '@mui/material/styles/zIndex';
 import { useNavigate } from 'react-router-dom';
-import NextIcon from '../../assets/nextIcon.svg';
+import NextIcon from '../../assets/nextIcon.jsx';
 
 function FollowSteps({ 
   stepNum = 1,
@@ -16,6 +16,7 @@ function FollowSteps({
   completed = false,
   buttonText = "Add signals",
   onClick ,
+  onClickSkip , 
   completedMessage , 
   image ,
 }) {
@@ -39,12 +40,35 @@ function FollowSteps({
         display: 'flex', // Flex container
         flexDirection: 'column', // Column layout
         justifyContent: 'space-between', // Push content to top and bottom
+        position : 'relative',
       }}
     >
-      {stepnum === 3 ? <Stack sx={{position:'absolute' , top : '10px ', right:' 10px'}}>
-          <Typography variant="body1" color="initial">skip</Typography>
-          <img src= {NextIcon}/>
-      </Stack> : none} 
+      {/* Skip notify */}
+      {active ? (
+        <StyledButton 
+        onClick = {onClickSkip}
+        size="small" 
+        variant="outlined" 
+        text="Skip" 
+        endIcon={<NextIcon/>} 
+        sx={{
+          backgroundColor:'transparent',
+          zIndex:'10',
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          border: 'none',
+          '&:hover': {
+            border: 'none',
+          },
+          '&:active': {
+            border: 'none',
+          },
+        }}
+      />
+      
+      ) : null}
+
       {/* Top Content */}
       <Stack spacing={1} sx={{ padding: '32px 10px', justifyContent: 'center',
         opacity: active ? 1 : (completed ? 0.5 : 0.7), // Conditional opacity logic
@@ -81,7 +105,7 @@ function FollowSteps({
             spacing={1}
             alignItems="center"
             justifyContent="center"
-            sx={{ margin: '24px auto' }}
+            sx={{ margin: '24px auto'}}
           >
             {/* Completed Icon */}
             <CompletedIcon
@@ -135,6 +159,7 @@ function FollowSteps({
     aria-label="edit"
     text="Navigate to dashboard"
     sx={{
+      backgroundColor:'transparent',
       border: 'transparent',
       '&:hover': {
         border: 'none',
@@ -144,6 +169,8 @@ function FollowSteps({
       },
       padding: '5px',
       pointerEvents: 'auto', // Enable interaction when completed
+      transition: 'opacity 1s ease-in-out, transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)', // Smooth transition with cubic-bezier for "back" effect
+        transform: completed ? 'scale(1)' : 'scale(0.95)', // Slight scale effect on appear
     }}
   />
   : completed ? (
@@ -155,6 +182,7 @@ function FollowSteps({
       endIcon={<CreateOutlinedIcon />}
       text="Edit"
       sx={{
+        backgroundColor:'transparent',
         border: 'transparent',
         '&:hover': {
           border: 'none',
@@ -164,6 +192,8 @@ function FollowSteps({
         },
         padding: '5px',
         pointerEvents: 'auto', // Enable interaction when completed
+        transition: 'opacity 1s ease-in-out, transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)', // Smooth transition with cubic-bezier for "back" effect
+        transform: completed ? 'scale(1)' : 'scale(0.95)', // Slight scale effect on appear
       }}
     />
   ) : (
@@ -174,6 +204,8 @@ function FollowSteps({
       text={buttonText}
       sx={{
         padding: '5px',
+        transition: 'opacity 1s ease-in-out, transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55)', // Smooth transition with cubic-bezier for "back" effect
+        transform: completed ? 'scale(1)' : 'scale(0.95)', // Slight scale effect on appear
       }}
     />
   )}
