@@ -9,9 +9,10 @@ import { useTheme } from '@emotion/react';
 import TextFieldComponent from '../../../components/textField/textField';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalFunction } from '../../../components/snackbar/snackbar';
-import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
-import VerticalAlignCenterOutlinedIcon from '@mui/icons-material/VerticalAlignCenterOutlined';
+import FeedbackReportingTo from '../../../assets/completedIcon';
 import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
+import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
+import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined';
 
 function GetUserInformation() {
     const [selected, setSelected] = useState({
@@ -79,6 +80,8 @@ function GetUserInformation() {
                     Designation
                     <span style={{ color: 'red' }}> *</span>
                 </Typography>
+
+                {/* Auto Complete */}
                 <Autocomplete
                     freeSolo
                     value={value}
@@ -120,6 +123,7 @@ function GetUserInformation() {
                         />
                     )}
                 />
+
                 </Stack>
 
                 <TextFieldComponent
@@ -135,30 +139,35 @@ function GetUserInformation() {
                         What type of feedback structure would you like to implement?
                         <span style={{ color: 'red' }}> *</span>
                     </Typography>
+
+{/* FeedBack Structure */}
                     <Stack
-                        direction="row"
-                        height="120px"
-                        width="100%"
-                        sx={{ justifyContent: 'space-between' }}
+                    height="120px"
+                    width="100%"
+                    sx={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(3, 1fr)', // Creates 3 equal-width columns
+                        gap: '10px', // Adds gap between columns
+                    }}
                     >
-                        <FeedbackStructure
-                            feedbackIcon = {<AccountTreeOutlinedIcon/>}
-                            selected={selected.reportingTo.status}
-                            ariaLabel="Reporting to"
-                            onClick={() => handleFeedbackChange('reportingTo')}
-                        />
-                        <FeedbackStructure
-                            feedbackIcon = {<VerticalAlignCenterOutlinedIcon/>}
-                            selected={selected.peerToPeer.status}
-                            ariaLabel="Peer to peer"
-                            onClick={() => handleFeedbackChange('peerToPeer')}
-                        />
-                        <FeedbackStructure
-                            feedbackIcon = {<WidgetsOutlinedIcon/>}
-                            selected={selected.degree.status}
-                            ariaLabel="360°"
-                            onClick={() => handleFeedbackChange('degree')}
-                        />
+                    <FeedbackStructure
+                        feedbackIcon={AccountTreeOutlinedIcon}
+                        selected={selected.reportingTo.status}
+                        ariaLabel="Reporting to"
+                        onClick={() => handleFeedbackChange('reportingTo')}
+                    />
+                    <FeedbackStructure
+                        feedbackIcon={SwapVertOutlinedIcon}
+                        selected={selected.peerToPeer.status}
+                        ariaLabel="Peer to peer"
+                        onClick={() => handleFeedbackChange('peerToPeer')}
+                    />
+                    <FeedbackStructure
+                        feedbackIcon={WidgetsOutlinedIcon}
+                        selected={selected.degree.status}
+                        ariaLabel="360°"
+                        onClick={() => handleFeedbackChange('degree')}
+                    />
                     </Stack>
 
                     <Stack direction={'row'}>

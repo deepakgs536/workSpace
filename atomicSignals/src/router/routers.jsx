@@ -1,3 +1,8 @@
 export const Router = {
-    userEntry : '/userEntry'
+    userEntry : '/' ,
+    getUserInformation : '/userEntry/information',
+    steps : '/steps' ,
+    dashboard : '/dashboard' ,
+    
 }
+

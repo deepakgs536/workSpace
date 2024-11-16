@@ -31,7 +31,7 @@ function resetPassword({changeUserEntry}) {
       onClick={() => {
       myFunction(true, 'Password Reseted Successfully');
       setTimeout(() => {
-      changeUserEntry('signUp');
+      changeUserEntry('logIn');
       }, 1000);
     }}
     />
