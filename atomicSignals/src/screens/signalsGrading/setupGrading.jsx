@@ -14,7 +14,7 @@ import SelectGradings from './selectGradings';
 import StyledButton from '../../components/buttons/styledButton';
 import { Styles } from './styles';
 
-function SetupGrading() {
+function SetupGrading({onClose,markCompleted}) {
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -29,17 +29,17 @@ function SetupGrading() {
   ]);
 
   // Function to delete a grading based on its text
-  const deleteGrading = (gradeText) => {
+  const deleteGrading = (gradeText , onClose) => {
     setGradings(gradings.filter(grade => grade.text !== gradeText));
   };
 
   return (
-    <Box sx={Styles.cointainer } aria-label='body'>
+    <Box sx={Styles.cointainer} aria-label='body'>
       <Stack sx={Styles.popup} aria-label='popup'>
         <Stack direction="row" justifyContent="space-between" paddingBottom="20px">
-          <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Setup signals</Typography>
+          <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Setup grading</Typography>
           <CloseOutlinedIcon
-            onClick={() => navigate('/steps')}
+            onClick={onClose}
             sx={{ alignSelf: 'center', cursor: 'pointer' }}
           />
         </Stack>
@@ -69,8 +69,16 @@ function SetupGrading() {
         </Stack>
         <Box display="flex" justifyContent="flex-end">
           <Stack direction="row" spacing={2} width="170px" paddingTop="20px">
-            <StyledButton size="small" text="Cancel" variant="outlined" sx={{ width: '100%' }} />
-            <StyledButton size="small" text="Save" onClick = {() => navigate('/steps')} sx={{ width: '100%' }} />
+            <StyledButton size="small" text="Cancel" onClick={onClose} variant="outlined" sx={{ width: '100%' }} />
+            <StyledButton
+              size="small"
+              text="Save"
+              onClick={() => {
+                markCompleted();
+                onClose();
+              }}
+              sx={{ width: '100%' }}
+            />  
           </Stack>
         </Box>
       </Stack>

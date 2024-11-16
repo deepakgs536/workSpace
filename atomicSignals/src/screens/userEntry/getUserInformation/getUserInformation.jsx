@@ -9,6 +9,9 @@ import { useTheme } from '@emotion/react';
 import TextFieldComponent from '../../../components/textField/textField';
 import { useNavigate } from 'react-router-dom';
 import { useGlobalFunction } from '../../../components/snackbar/snackbar';
+import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
+import VerticalAlignCenterOutlinedIcon from '@mui/icons-material/VerticalAlignCenterOutlined';
+import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
 
 function GetUserInformation() {
     const [selected, setSelected] = useState({
@@ -139,16 +142,19 @@ function GetUserInformation() {
                         sx={{ justifyContent: 'space-between' }}
                     >
                         <FeedbackStructure
+                            feedbackIcon = {<AccountTreeOutlinedIcon/>}
                             selected={selected.reportingTo.status}
                             ariaLabel="Reporting to"
                             onClick={() => handleFeedbackChange('reportingTo')}
                         />
                         <FeedbackStructure
+                            feedbackIcon = {<VerticalAlignCenterOutlinedIcon/>}
                             selected={selected.peerToPeer.status}
                             ariaLabel="Peer to peer"
                             onClick={() => handleFeedbackChange('peerToPeer')}
                         />
                         <FeedbackStructure
+                            feedbackIcon = {<WidgetsOutlinedIcon/>}
                             selected={selected.degree.status}
                             ariaLabel="360°"
                             onClick={() => handleFeedbackChange('degree')}

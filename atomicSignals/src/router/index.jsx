@@ -7,7 +7,7 @@ import ForgetPassword from '../screens/userEntry/possibleEntries/forgetPassword'
 import ResetPassword from '../screens/userEntry/possibleEntries/resetPassword';
 import GetUserInformation from '../screens/userEntry/getUserInformation/getUserInformation';
 import Dashboard from '../screens/Dashboard/dashboard';
-import Steps from '../screens/steps/steps';
+import Steps from '../screens/steps/localStorage';
 import SetupSignals from '../screens/signalsGrading/setupSignals';
 import SetupGrading from '../screens/signalsGrading/setupGrading';
 

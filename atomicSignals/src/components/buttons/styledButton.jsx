@@ -80,7 +80,7 @@ const StyledButton = styled(Button)(({ theme, ...props }) => {
 // Usage
 const styledButton = (props) => {
     return (
-        <StyledButton {...props} disableRipple onClick={props.onClick} endIcon={props.endIcon}>
+        <StyledButton {...props} disableRipple onClick={props.onClick} endIcon={props.endIcon} disableElevation disableFocusRipple>
             <Typography sx={{fontSize:'14px'}}>{props.text}</Typography>
         </StyledButton>
     );

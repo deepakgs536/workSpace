@@ -19,7 +19,7 @@ const StyledButton = styled(Box)(({ theme, selected }) => ({
   padding: '16px 0',
 }));
 
-function FeedbackStructure({ selected = false ,ariaLabel , onClick}) {
+function FeedbackStructure({ selected = false ,ariaLabel , onClick , feedbackIcon}) {
   const theme = useTheme();
 
   return (

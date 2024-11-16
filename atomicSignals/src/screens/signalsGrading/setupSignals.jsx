@@ -3,12 +3,12 @@ import { alpha, Box, Divider, Fab, Stack, TextField, Typography } from '@mui/mat
 import React, { useState } from 'react';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import AddedSignals from './addedSignals'
+import AddedSignals from './addedSignals';
 import StyledButton from '../../components/buttons/styledButton';
 import { useNavigate } from 'react-router-dom';
 import { Styles } from './styles';
 
-function SetupSignals() {
+function SetupSignals({ onClose, markCompleted }) { // Accept the setActiveOverlay function as a prop
   const [addedSignals, setAddedSignals] = useState(['Communication', 'Efficiency', 'Time Management','Attitude','Unavailability']);
   const [addSignal, setAddSignal] = useState('');
   const theme = useTheme();
@@ -26,13 +26,12 @@ function SetupSignals() {
   };
 
   return (
-    <Box sx={Styles.cointainer}aria-label='body'>
-      <Stack 
-      sx={Styles.popup} aria-label='popup'>
+    <Box sx={Styles.cointainer} aria-label='body'>
+      <Stack sx={Styles.popup} aria-label='popup'>
         <Stack direction="row" justifyContent="space-between" paddingBottom="20px">
           <Typography sx={{ fontSize: '16px', fontWeight: '600' }}>Setup signals</Typography>
           <CloseOutlinedIcon
-            onClick={() => navigate('/steps')}
+            onClick={onClose} // Close overlay on click
             sx={{ alignSelf: 'center', cursor: 'pointer' }}
           />
         </Stack>
@@ -88,7 +87,7 @@ function SetupSignals() {
           </Box>
         </Stack>
         <Box>
-        <Stack justifyContent="space-between" direction="row" paddingTop="16px" aria-label='display signals'>
+          <Stack justifyContent="space-between" direction="row" paddingTop="16px" aria-label='display signals'>
             <Typography sx={{ fontSize: '12px', whiteSpace: 'nowrap' }}>Added signals ({addedSignals.length})</Typography>
             <Typography sx={{ color: theme.palette.text.secondary, fontSize: '10px', whiteSpace: 'nowrap' }}>
               Feel free to remove the signals we have added for you :)
@@ -104,16 +103,24 @@ function SetupSignals() {
                 '-ms-overflow-style': 'none',  // Hide scrollbar in IE and Edge
                 scrollbarWidth: 'none',  // Hide scrollbar in Firefox
             }}>
-        {addedSignals.map((signal, key) => (
-            <AddedSignals key={key} text={signal} removeAddedSignal={removeAddedSignal} />
-        ))}
-        </Stack>
+            {addedSignals.map((signal, key) => (
+              <AddedSignals key={key} text={signal} removeAddedSignal={removeAddedSignal} />
+            ))}
+          </Stack>
         </Box>
         <Box display="flex" justifyContent="flex-end" aria-label='cancel/save'>
           <Stack direction="row" spacing={2} width="170px" paddingTop="20px">
-            <StyledButton size="small" text="Cancel" variant="outlined" sx={{ width: '100%' }} />
-            <StyledButton size="small" text="Save" onClick = {() => navigate('/steps')} sx={{ width: '100%' }} />
-          </Stack>
+            <StyledButton size="small" text="Cancel" onClick={onClose} variant="outlined" sx={{ width: '100%' }} />
+            <StyledButton
+              size="small"
+              text="Save"
+              onClick={() => {
+                markCompleted();
+                onClose();
+              }}
+              sx={{ width: '100%' }}
+            />
+ </Stack>
         </Box>
       </Stack>
     </Box>
