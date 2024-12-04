@@ -1,6 +1,7 @@
+import { useGlobalFunction } from '../../../components/snackbar/snackbar';
 import { Box, Stack, Typography, Autocomplete, TextField } from '@mui/material';
 import React, { useState } from 'react';
-import BrandIcon from '../../../assets/brandIcon' ;
+import BrandIcon from '../../../assets/brandIcon';
 import FeedbackTool from '../../../assets/feedbackTool';
 import FeedbackStructure from './feedbackStructure';
 import StyledButton from '../../../components/buttons/styledButton';
@@ -8,53 +9,65 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useTheme } from '@emotion/react';
 import TextFieldComponent from '../../../components/textField/textField';
 import { useNavigate } from 'react-router-dom';
-import { useGlobalFunction } from '../../../components/snackbar/snackbar';
-import FeedbackReportingTo from '../../../assets/completedIcon';
-import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
+import { useDispatch, useSelector } from 'react-redux'; // Import Redux hooks
+import { setUserName, setUserEmail, setUserPassword, setDesignation, setFeedbackStructure ,setWorkspaceName } from '../../../store/slices/userSlice'; // Import actions
 import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 import SwapVertOutlinedIcon from '@mui/icons-material/SwapVertOutlined';
+import WidgetsOutlinedIcon from '@mui/icons-material/WidgetsOutlined';
 
 function GetUserInformation() {
-    const [selected, setSelected] = useState({
-        'reportingTo': {
-            'status': true,
-            'message': 'Only reporting managers can give feedback',
-        },
-        'peerToPeer': {
-            'status': false,
-            'message': 'Team members can give feedback to another team member except the reporting manager'
-        },
-        'degree': {
-            'status': false,
-            'message': 'Team members can give feedback to another team member including the reporting manager'
-        },
-    });
-
-    const options = ['CEO', 'Manager','Employee'];
-    const theme = useTheme();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const { myFunction } = useGlobalFunction();
-    const handleFeedbackChange = (ariaLabel) => {
-        setSelected(prevSelected => ({
-            'reportingTo': { ...prevSelected.reportingTo, status: false },
-            'peerToPeer': { ...prevSelected.peerToPeer, status: false },
-            'degree': { ...prevSelected.degree, status: false },
-            [ariaLabel]: { ...prevSelected[ariaLabel], status: true }
-        }));
-    };
 
-    const activeMessage = Object.values(selected).find(item => item.status)?.message || '';
-    const [value, setValue] = useState('');
+    // Access Redux state
+    const { selected, feedbackStructureSelected, name, designation, password, email , workspaceName } = useSelector(
+        (state) => state.userdetail
+    );
+
+    const options = ['CEO', 'Manager', 'Employee'];
+    const theme = useTheme();
+
+    // Local state for Autocomplete input
     const [inputValue, setInputValue] = useState('');
 
+    // Handle feedback structure change
+    const handleFeedbackChange = (ariaLabel) => {
+        dispatch(setFeedbackStructure(ariaLabel)); // Dispatch Redux action to change feedback structure
+    };
+
+    // Handle form submission
+    const handleUserInfoSubmit = () => {
+        if (
+            name.trim() !== "" &&
+            designation.trim() !== ""  &&// Validate designation
+            password.trim().length >= 8 && 
+            workspaceName.trim() !== ""
+            // email.trim() !== "" 
+        ) {
+            myFunction(true, 'Kudos! You’re into building the right feedback culture' , 'success');
+            navigate('/steps'); // Navigate to the next step
+        } 
+        else {
+            myFunction(false,'Please fill all fields correctly','error');
+        }
+    };
+
+    const activeMessage = feedbackStructureSelected || '';
+
     return (
-        <Box width="100vw" height="100vh" sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-evenly',
-            bgcolor: '#F8F8F8',
-        }}>
-            <Stack width="40%" minWidth='420px' ariaLabel='message'>
+        <Box
+            width="100vw"
+            height="100vh"
+            sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-evenly',
+                bgcolor: '#F8F8F8',
+            }}
+        >
+            {/* Left Section */}
+            <Stack width="40%" minWidth="420px" aria-label="message">
                 <BrandIcon width="230px" height="42.02px" />
                 <Box sx={{ margin: '1rem 0' }}>
                     <FeedbackTool width="385.27px" height="154.03px" />
@@ -68,129 +81,133 @@ function GetUserInformation() {
                 </Typography>
             </Stack>
 
-            <Stack spacing={1.5} width="32%" minWidth='420px' maxWidth='450px' ariaLabel='almost-there'>
+            {/* Right Section */}
+            <Stack spacing={1.5} width="32%" minWidth="420px" maxWidth="450px" aria-label="almost-there">
                 <Typography sx={{ fontSize: '20px', fontWeight: 'bold' }}>Almost there!</Typography>
 
+                {/* Name Field */}
                 <TextFieldComponent
-                    type='text' label='Your name' placeholder='Sam Parker'
-                />
-
-                <Stack>
-                <Typography sx={{ fontSize: '12px', marginBottom: '4px' }}>
-                    Designation
-                    <span style={{ color: 'red' }}> *</span>
-                </Typography>
-
-                {/* Auto Complete */}
-                <Autocomplete
-                    freeSolo
-                    value={value}
-                    onChange={(event, newValue) => setValue(newValue)}
-                    inputValue={inputValue}
-                    onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
-                    id="controllable-states-demo"
-                    options={options}
-                    disableClearable
-                    openIcon={null}
-                    sx={{
-                        fontSize: '14px',
-                        width: '100%',
+                    type="text"
+                    label="Your name"
+                    placeholder="Sam Parker"
+                    value={name} // Controlled from Redux state
+                    onChange={(e) => {
+                        dispatch(setUserName(e.target.value)); // Update Redux state
                     }}
-                    
-                    renderInput={(params) => (
-                        <TextField
-                        {...params}
-                        placeholder="CEO, Manager, etc"
-                        inputProps={{
-                            ...params.inputProps,
-                            readOnly: true,  // Disable typing by making the field read-only
-                        }}
-                        
-                        sx={{
-                            borderRadius: '4px',
-                            bgcolor: '#FFFFFF',
-                            width: '100%',
-                            height:'50%',
-                            '& .MuiInputBase-input': {
-                            fontSize:'14px',
-                            color: theme.palette.text.primary,
-                            pointerEvents: 'none', // Prevent cursor and any interaction
-                            },
-                            '& .MuiInputBase-root': {
-                            padding: '3px 5px', // Remove padding around the input field itself
-                            }
-                        }}
-                        />
-                    )}
-                />
+                    />
 
+
+                {/* Designation Field */}
+                <Stack>
+                    <Typography sx={{ fontSize: '12px', marginBottom: '4px' }}>
+                        Designation
+                        <span style={{ color: 'red' }}> *</span>
+                    </Typography>
+
+                    <Autocomplete
+                        freeSolo
+                        value={designation} // Bind to Redux state
+                        onChange={(event, newValue) => {
+                            dispatch(setDesignation(newValue)); // Dispatch action to set designation
+                        }}
+                        inputValue={inputValue}
+                        onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
+                        options={options}
+                        disableClearable
+                        sx={{ fontSize: '14px', width: '100%' }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                placeholder="CEO, Manager, etc"
+                                sx={{
+                                    borderRadius: '4px',
+                                    bgcolor: '#FFFFFF',
+                                    width: '100%',
+                                    '& .MuiInputBase-input': {
+                                        fontSize: '14px',
+                                        color: theme.palette.text.primary,
+                                    },
+                                    '& .MuiInputBase-root': {
+                                        padding: '3px 5px',
+                                    },
+                                }}
+                            />
+                        )}
+                    />
                 </Stack>
 
+                {/* Password Field */}
                 <TextFieldComponent
-                    type='password' label='Set password' placeholder='P@ssw0rd'
-                />
-                <TextFieldComponent
-                    type='email' label='Workspace name' placeholder='Company name'
-                    endAdornmentText='@atomicsignals.com'  // Ensure this prop is handled in your TextFieldComponent
+                    type="password"
+                    label="Set password"
+                    placeholder="P@ssw0rd"
+                    value={password}
+                    onChange={(e) => dispatch(setUserPassword(e.target.value))} // Dispatch Redux action
                 />
 
+                {/* Email Field */}
+                <TextFieldComponent
+                    type="email"
+                    label="Workspace name"
+                    placeholder="Company name"
+                    endAdornmentText="@atomicsignals.com"
+                    value={workspaceName}
+                    onChange={(e) => dispatch(setWorkspaceName(e.target.value))} // Dispatch Redux action
+                />
+
+                {/* Feedback Structure */}
                 <Stack spacing={1}>
                     <Typography sx={{ fontSize: '12px' }}>
                         What type of feedback structure would you like to implement?
                         <span style={{ color: 'red' }}> *</span>
                     </Typography>
 
-{/* FeedBack Structure */}
                     <Stack
-                    height="120px"
-                    width="100%"
-                    sx={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(3, 1fr)', // Creates 3 equal-width columns
-                        gap: '10px', // Adds gap between columns
-                    }}
+                        height="120px"
+                        width="100%"
+                        sx={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(3, 1fr)',
+                            gap: '10px',
+                        }}
                     >
-                    <FeedbackStructure
-                        feedbackIcon={AccountTreeOutlinedIcon}
-                        selected={selected.reportingTo.status}
-                        ariaLabel="Reporting to"
-                        onClick={() => handleFeedbackChange('reportingTo')}
-                    />
-                    <FeedbackStructure
-                        feedbackIcon={SwapVertOutlinedIcon}
-                        selected={selected.peerToPeer.status}
-                        ariaLabel="Peer to peer"
-                        onClick={() => handleFeedbackChange('peerToPeer')}
-                    />
-                    <FeedbackStructure
-                        feedbackIcon={WidgetsOutlinedIcon}
-                        selected={selected.degree.status}
-                        ariaLabel="360°"
-                        onClick={() => handleFeedbackChange('degree')}
-                    />
+                        <FeedbackStructure
+                            feedbackIcon={AccountTreeOutlinedIcon}
+                            selected={selected.reportingTo.status}
+                            ariaLabel="reportingTo"
+                            onClick={() => handleFeedbackChange('reportingTo')}
+                        />
+                        <FeedbackStructure
+                            feedbackIcon={SwapVertOutlinedIcon}
+                            selected={selected.peerToPeer.status}
+                            ariaLabel="peerToPeer"
+                            onClick={() => handleFeedbackChange('peerToPeer')}
+                        />
+                        <FeedbackStructure
+                            feedbackIcon={WidgetsOutlinedIcon}
+                            selected={selected.degree.status}
+                            ariaLabel="degree"
+                            onClick={() => handleFeedbackChange('degree')}
+                        />
                     </Stack>
 
-                    <Stack direction={'row'}>
-                        <InfoOutlinedIcon sx={{
-                            color: theme.palette.success.main,
-                            width: '12px', height: '12px',
-                            alignSelf: 'top',
-                            margin: '3px 8px 0 0'
-                        }} />
+                    <Stack direction="row">
+                        <InfoOutlinedIcon
+                            sx={{
+                                color: theme.palette.success.main,
+                                width: '12px',
+                                height: '12px',
+                                alignSelf: 'top',
+                                margin: '3px 8px 0 0',
+                            }}
+                        />
                         <Typography sx={{ minHeight: '36px', fontSize: '12px' }}>
                             {activeMessage}
                         </Typography>
                     </Stack>
                 </Stack>
 
-                <StyledButton text='Lets dive in' 
-                onClick={() => {
-                    myFunction(true, 'Kudos! You’re into building the right feedback culture');
-
-                    navigate('/steps');
-
-                  }}
-                />
+                <StyledButton text="Let's dive in" onClick={handleUserInfoSubmit} />
             </Stack>
         </Box>
     );

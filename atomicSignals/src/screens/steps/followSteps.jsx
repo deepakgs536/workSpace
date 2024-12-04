@@ -143,14 +143,14 @@ function FollowSteps({
 
       {/* Styled Button */}
       <Box
-  sx={{
-    zIndex: 10, // Ensures button is above lower layers
-    mt: 'auto',
-    mb: '0px', // Space from the bottom
-    alignSelf: 'center', // Center button horizontally
-    width: '100%',
-  }}
->
+      sx={{
+        zIndex: 10, // Ensures button is above lower layers
+        mt: 'auto',
+        mb: '0px', // Space from the bottom
+        alignSelf: 'center', // Center button horizontally
+        width: '100%',
+      }}
+    >
   {completed && stepNum === 3 ? 
     <StyledButton
     onClick={() => navigate('/dashboard')}  
@@ -210,7 +210,6 @@ function FollowSteps({
     />
   )}
 </Box>
-
     </Box>
   );
 }

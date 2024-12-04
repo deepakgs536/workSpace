@@ -2,8 +2,17 @@ import { useTheme } from '@emotion/react';
 import { Box, InputAdornment, TextField, Typography } from '@mui/material';
 import React from 'react';
 
-function TextFieldComponent({ type = 'text', label = 'name', placeholder = 'John', required = true, endAdornmentText = '' }) {
+function TextFieldComponent({ 
+  type = 'text', 
+  label = 'name', 
+  placeholder = 'John', 
+  required = true, 
+  endAdornmentText = '', 
+  value = '', 
+  onChange = () => {} // Default to a no-op to avoid errors
+}) {
   const theme = useTheme();
+
   return (
     <Box sx={{ marginTop: '18px' }}>
       <Typography sx={{ fontSize: '12px', marginBottom: '4px' }}>
@@ -14,28 +23,30 @@ function TextFieldComponent({ type = 'text', label = 'name', placeholder = 'John
         placeholder={placeholder}
         type={type}
         required={required}
+        value={value} // Controlled value
+        onChange={onChange} // Pass onChange handler
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
-                <Typography sx={{fontSize:'14px'}}>{endAdornmentText}</Typography>
+              <Typography sx={{ fontSize: '14px' }}>{endAdornmentText}</Typography>
             </InputAdornment>
           ),
         }}
         sx={{
           borderRadius: '4px',
           bgcolor: '#FFFFFF',
-          width: '100%', // Full width
+          width: '100%',
           '& .MuiInputBase-input': {
-            padding: '10px', // Padding inside the input field
-            fontSize: '14px', // Set the font size for the input text
-            color: theme.palette.text.primary, // Set the input text color
+            padding: '10px',
+            fontSize: '14px',
+            color: theme.palette.text.primary,
           },
           '& .MuiInputBase-root.Mui-focused': {
-            borderColor: theme.palette.text.disabled, // Set focus border color
-            boxShadow: 'none', // Remove default box-shadow on focus
+            borderColor: theme.palette.text.disabled,
+            boxShadow: 'none',
           },
           '& .MuiOutlinedInput-root': {
-            borderColor: theme.palette.text.disabled, // Apply border color to all states
+            borderColor: theme.palette.text.disabled,
           },
         }}
       />

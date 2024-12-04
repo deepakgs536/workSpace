@@ -10,13 +10,14 @@ import OutlookIcon from '../../../assets/outlookIcon.svg';
 import SignUpBackgroundImage from '../../../assets/signUpBackgroundImage.svg';
 import { Navigate, useNavigate } from 'react-router-dom';
 import TextFieldComponent from '../../../components/textField/textField';
+import { useSelector } from 'react-redux';
 // import { changeUserEntry } from '../userEntry';
 
 function SignUp( {changeUserEntry} ) {
+    // const {name} = useSelector((state) => state.user);
     const theme = useTheme();
     const navigate = useNavigate()
     const [isHovered, setIsHovered] = useState(false); // Track hover state
-
     return (
         <>
             <Typography sx={{ fontSize: '20px', fontWeight: '600' }}>

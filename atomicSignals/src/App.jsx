@@ -17,10 +17,13 @@ import SetupGrading from './screens/signalsGrading/setupGrading';
 // import Temp from './components/temp'
 import { GlobalFunctionProvider } from './components/snackbar/snackbar';  // import the provider
 import Navbar from './components/navbar/navbar';
+import { Provider } from 'react-redux';
+import Store from './store/store';
 function App() {
   return (
     <>
     <CssBaseline />
+    <Provider store={Store}>
     <ThemeProvider theme={LightTheme}>
       <GlobalFunctionProvider>
       <AppRouter/> 
@@ -34,6 +37,7 @@ function App() {
       {/* <SetupGrading/> */}
 
     </ThemeProvider>
+    </Provider>
     </>
   )
 }

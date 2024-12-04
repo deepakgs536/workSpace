@@ -8,7 +8,6 @@ function SelectGradings({ gradeImage, grade, onCloseClick }) {
       {/* Displaying the image */}
       <img src={gradeImage} alt={`${grade} icon`} width={45} height={28} />
       
-      {/* Vertical Divider */}
       <Divider orientation="vertical" flexItem sx={{ alignSelf: 'stretch' }} />
       
       {/* Message and Close Section */}

@@ -1,16 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography'
 import { TextField } from '@mui/material'
 import StyledButton from '../../../components/buttons/styledButton';
 import TextFieldComponent from '../../../components/textField/textField';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useGlobalFunction } from '../../../components/snackbar/snackbar'; 
 // import { changeUserEntry } from '../userEntry';
 
 
 function logIn({changeUserEntry}) {
+    const { myFunction } = useGlobalFunction();
+    const {email , password} = useSelector((state) => state.userdetail)
     const theme = useTheme();
     const navigate = useNavigate();
+    const [localEmail , setLocalEmail] = useState("")
+    const [localPassword , setLocalPassword] = useState("")
+    const handleLogInClick = () => {
+        if(email === localEmail && password === localPassword){
+            myFunction(false, 'Log in successful','success')
+            setTimeout(() => {
+                navigate('/dashboard');
+            }, 2000); // 2000 milliseconds (2 seconds)
+            
+        }
+        else {
+            myFunction(false, 'Wrong password or Email','error')
+        }
+        
+    }
   return (
     <>
     
@@ -24,9 +43,13 @@ function logIn({changeUserEntry}) {
 
     <TextFieldComponent
                     type='email' label='Email' placeholder='Sam Parker'
+                    value = {localEmail}
+                    onChange={(e) => setLocalEmail(e.target.value)}
     />
     <TextFieldComponent
                     type='password' label='Password' placeholder='Sam Parker'
+                    value= {localPassword}
+                    onChange={(e)=> setLocalPassword(e.target.value)}
     />
 
     <Typography onClick={() => changeUserEntry('forgetPassword')}
@@ -41,7 +64,7 @@ function logIn({changeUserEntry}) {
         Forget Password?
     </Typography>
 
-    <StyledButton text='Log In' onClick={() => navigate('/dashboard')} />
+    <StyledButton text='Log In' onClick={handleLogInClick} />
     
     </>
   )

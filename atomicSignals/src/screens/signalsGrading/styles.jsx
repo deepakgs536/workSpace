@@ -7,7 +7,7 @@ export const Styles = {
         position:'absolute', 
         top:0,
         left:0,
-        zIndex:1,
+        zIndex:20,
     },
     'popup' : {
         width: '36.66vw',
